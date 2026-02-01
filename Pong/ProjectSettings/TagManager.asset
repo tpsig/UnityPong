@@ -8,6 +8,7 @@ TagManager:
   - BottomWall
   - LeftWall
   - RightWall
+  - Paddle
   layers:
   - Default
   - TransparentFX
