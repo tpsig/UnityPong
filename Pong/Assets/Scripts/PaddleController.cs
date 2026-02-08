@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PaddleController : MonoBehaviour {
+public abstract class PaddleController : MonoBehaviour {
     [SerializeField] protected float speed = 8f;
     protected Rigidbody2D rb;
 
@@ -13,7 +13,9 @@ public class PaddleController : MonoBehaviour {
         rb.velocity = new Vector2(0f, input * speed);
     }
 
-    protected virtual float GetMovementInput() {
-        return 0f;
+    protected abstract float GetMovementInput();
+    
+    public virtual void OnHit(Collision2D collision) {
+        
     }
 }

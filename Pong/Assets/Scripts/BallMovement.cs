@@ -1,25 +1,9 @@
 using UnityEngine;
 
-public class BallMovement : MonoBehaviour {
+public class BallMovement : MonoBehaviour, ICollidable {
     [SerializeField] private float speed = 5f;
     private Vector2 direction;
     private Rigidbody2D rb;
-
-    public float GetSpeed() {
-        return speed;
-    }
-
-    public void SetSpeed(float newSpeed) {
-        speed = Mathf.Max(0f, newSpeed);
-    }
-
-    public Vector2 GetDirection() {
-        return direction;
-    }
-
-    public void SetDirection(Vector2 newDirection) {
-        direction = newDirection.normalized;
-    }
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -31,8 +15,17 @@ public class BallMovement : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Paddle"))
-        {
+        ICollidable collidable = collision.gameObject.GetComponent<ICollidable>();
+        if (collidable != null) {
+            collidable.OnHit(collision);
+        }
+
+        // Ball handles its own collision response
+        OnHit(collision);
+    }
+
+    public void OnHit(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Paddle")) {
             direction = new Vector2(-direction.x, direction.y).normalized;
             return;
         }
