@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Netcode;
 
 public class LeftPaddle : PaddleController {
     private SpriteRenderer spriteRenderer;

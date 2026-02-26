@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class BallMovement : MonoBehaviour, ICollidable {
+public class BallMovement : NetworkBehaviour, ICollidable {
     [SerializeField] private float speed = 5f;
     private Vector2 direction;
     private Rigidbody2D rb;
@@ -11,16 +12,16 @@ public class BallMovement : MonoBehaviour, ICollidable {
     }
 
     void FixedUpdate() {
-        rb.velocity = direction * speed;
+        if (!IsServer) return;
+        rb.velocity = direction * speed;    
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        ICollidable collidable = collision.gameObject.GetComponent<ICollidable>();
-        if (collidable != null) {
-            collidable.OnHit(collision);
-        }
+        if (!IsServer) return;
 
-        // Ball handles its own collision response
+        ICollidable collidable = collision.gameObject.GetComponent<ICollidable>();
+        if (collidable != null) collidable.OnHit(collision);
+
         OnHit(collision);
     }
 
