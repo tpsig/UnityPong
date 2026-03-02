@@ -13,8 +13,13 @@ public class BallMovement : NetworkBehaviour, ICollidable {
 
     void FixedUpdate() {
         if (!IsServer) return;
-        rb.velocity = direction * speed;    
-    }
+        if (!GameManager.Instance.gameStarted.Value)
+            return;
+        if (GameManager.Instance.gameOver.Value)
+            return;
+
+        rb.velocity = direction * speed;
+}   
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (!IsServer) return;
@@ -33,5 +38,9 @@ public class BallMovement : NetworkBehaviour, ICollidable {
 
         Vector2 normal = collision.contacts[0].normal;
         direction = Vector2.Reflect(direction, normal).normalized;
+    }
+    
+    public void SetDirection(Vector2 newDirection) {
+        direction = newDirection.normalized;
     }
 }

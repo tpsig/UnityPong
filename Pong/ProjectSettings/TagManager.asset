@@ -9,6 +9,11 @@ TagManager:
   - LeftWall
   - RightWall
   - Paddle
+  - LeftScoreZone
+  - RightScoreZone
+  - Ball
+  - leftScore
+  - rightScore
   layers:
   - Default
   - TransparentFX
